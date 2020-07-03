@@ -2,6 +2,7 @@
   <div class="inner">
     <h1 class="site-title"><a class="logo-text" href="/">{{.Site.Title}}</a></h1>
     <p class="site-description">{{.Site.Params.description}}
+    {{ if (not ($.Param "disable_debug")) }}
       <br>
       {{ printf `<span style="font-variant: small-caps;">.Kind</span> (<strong>%s</strong>):` .Kind | safeHTML }}
       {{ printf `<span style="font-variant: small-caps;">.Type</span> (<strong>%s</strong>) /` .Type | safeHTML }}
@@ -21,6 +22,7 @@
       {{ end }}
       {{ end }}
       {{ printf `<span style="font-variant: small-caps;">Bundle</span>: <strong>%s</strong>` $bundle_type | safeHTML }}
+    {{end}}
     </p>
   </div><!-- .inner -->
 </header>

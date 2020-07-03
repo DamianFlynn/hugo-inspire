@@ -26,13 +26,36 @@
 	{{ end }}
     </ul>
 {{ end }}
-
-<h1>Archive of posts, by {{ $singular_term }}</h1>
-<ul>
-    {{ range .Data.Terms.Alphabetical }}
-        <li><a href="/{{ $plural_term }}/{{ .Name | urlize }}">{{ .Name }}</a> ({{ .Count }} entries)</li>
-    {{ end }}
-</ul>
+<div class="site-content">
+  <div class="inner">
+    <main class="site-main">
+      <article class="post">
+        <header class="entry-header">
+          <div class="entry-header-wrap">  
+            <h1 class="entry-title">Archive of posts, by {{ $singular_term }}</h1>
+          </div>
+        </header><!-- .entry-header -->
+        <div class="entry-content">
+          <div class="archive-tags-list">
+          {{ range .Data.Terms.Alphabetical }}
+            <a href="/{{ $plural_term }}/{{ .Name | urlize }}">{{ .Name }}</a> ({{ .Count }} entries)
+          {{ end }}
+          </div>
+          {{ range $key, $taxonomy := .Data.Terms.Alphabetical }}
+          <h2 id="{{ $taxonomy.Name }}">{{ $taxonomy.Name }}</h2>
+          <ul class="archive-posts-list">
+            {{ range $taxonomy.Pages }}
+            <li><a href="{{ .Permalink }}" rel="bookmark" title="Permanent Link to {{ .RelPermalink }}">{{ .LinkTitle }}</a> <span class="archive-meta"> — <time class="published" datetime="{{ .Date.Format "2 January 2006" | safeHTML }}">{{ .Date.Format "2 January 2006" | safeHTML }}</time></span></li>
+            {{end}}
+          </ul>
+          <p><a href="#top" class="archive-top-link" title="Back to Top">Return to top</a></p>
+          {{ end }}
+        </div><!-- .entry-content -->
+      </article><!-- .post -->
+  </main><!-- .site-main -->
+  {{ partial "page-sidebar" . }}
+</div><!-- .inner -->
+</div><!-- .site-content -->
 
 {{ if (not ($.Param "disable_debug")) }}
     <hr>

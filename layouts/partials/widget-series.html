@@ -2,7 +2,7 @@
 <div class="widget-wrap fl-wrap">
   {{ $this := .Permalink }}
   {{ $seriesUrl := .Params.series | urlize }}
-  <h4 class="widget-title"><span>03.</span> {{.Params.series}}</h4>
+  <h4 class="widget-title"><span>Series</span> {{.Params.series}}</h4>
   <div class="widget-container fl-wrap">
       {{ range $taxonomyname, $taxonomy := .Site.Taxonomies.series }}
 {{ if eq $taxonomyname $seriesUrl }}
