@@ -1,7 +1,5 @@
 {{ define "main" }}             <!-- List of all posts -->
 
-{{ partial "header_image.html" . }}
-
 {{ if (eq .Kind "section") }}                          <!-- Section -->
     {{ $title := .Title }}
     {{ $section := .Section }}
