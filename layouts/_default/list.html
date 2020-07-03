@@ -20,10 +20,14 @@
 <h1>Posts with the {{ .Data.Singular }} ‘{{ .Data.Term }}’</h1>
 {{ end }}
 
+
+<!-- Page Main Payload-->
+{{ $paginator := .Paginate .RegularPages }}
 <div class="site-content">
   <div class="inner">
     <main class="site-main">
-      {{ range .RegularPages }}
+    {{ range $paginator.Pages }}
+      <!-- Article Start -->
       <article class="post">
         <header class="entry-header">
           <div class="entry-header-wrap">
@@ -46,14 +50,27 @@
             <span>Category :{{ range $index, $tag := .Params.categories }}<a
               href="{{$.Site.BaseURL}}/categories/{{ $tag | urlize }}/" title="Pages category {{ $tag }}" rel="tag">{{$tag}}</a> {{end}}</span>
           </div>        
-      </footer><!-- .entry-footer -->
-
+        </footer><!-- .entry-footer -->
       </article><!-- .post -->
       {{ end }}
+      <!-- Article End -->
+      <!-- Page Navigator Start -->
+      <nav class="pagination">
+        <h2 class="screen-reader-text">Posts navigation</h2>
+        {{if .Paginator.HasPrev }}
+        <a href="{{ .Paginator.Prev.URL }}" class="newer-posts fa-chevron-left square fill-horizontal"><span class="screen-reader-text">Newer Posts</span></a>
+        {{ end }}
+        <span class="page-number">Page {{ .Paginator.PageNumber }} of {{ .Paginator.TotalPages }}</span>
+        {{if .Paginator.HasNext }}
+        <a href="{{ .Paginator.Next.URL }}" class="older-posts fa-chevron-right square fill-horizontal"><span class="screen-reader-text">Older Posts</span></a>
+        {{end}}
+      </nav><!-- Page Navigator End -->
     </main><!-- .site-main -->
-
+    {{ partial "page-sidebar" . }}
   </div><!-- .inner -->
 </div><!-- .site-content -->
+<!-- End Of Page Main Payload-->
+
 {{ with .Content }}
 <h3>Content</h3>
 {{ . }}

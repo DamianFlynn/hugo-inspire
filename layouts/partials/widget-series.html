@@ -1,0 +1,22 @@
+{{if .Params.series}}
+<div class="widget-wrap fl-wrap">
+  {{ $this := .Permalink }}
+  {{ $seriesUrl := .Params.series | urlize }}
+  <h4 class="widget-title"><span>03.</span> {{.Params.series}}</h4>
+  <div class="widget-container fl-wrap">
+      {{ range $taxonomyname, $taxonomy := .Site.Taxonomies.series }}
+{{ if eq $taxonomyname $seriesUrl }}
+<ul class="tagcloud">
+{{ range $taxonomy.Pages.ByDate }}
+{{ if (eq $this .Permalink) }}
+<li><strong><a class="transition link">{{ .LinkTitle }}</span></strong></li>
+{{ else }}
+<li><a href="{{ .Permalink }}" class="transition link">{{ .LinkTitle }}</a></li>
+{{ end }}
+{{ end }}
+</ul>
+{{ end }}
+{{ end }}
+  </div>
+</div>
+{{end}}

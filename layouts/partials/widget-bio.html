@@ -1,0 +1,8 @@
+{{ if .Site.Author.bio }}
+<section class="widget widget-text">
+    <h2 class="widget-title">About {{ .Site.Author.name }}</h2>
+    <p><img src="{{ .Site.Author.image }}"></p>
+    <p>{{ .Site.Author.bio }}</p>
+    {{partial "social-links" . }}
+</section><!-- .widget-text -->
+{{end}}

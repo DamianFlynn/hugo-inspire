@@ -1,0 +1,12 @@
+{{ if not (eq (len $.Site.Taxonomies.categories) 0) }}
+<div class="widget-wrap fl-wrap">
+  <h4 class="widget-title"><span>05.</span> Categories</h4>
+  <div class="widget-container fl-wrap">
+      <ul class="cat-item">
+        {{ range first 8 .Site.Taxonomies.categories.ByCount }}
+    <li><a href="/categories/{{ .Name | urlize }}">{{ .Name }}</a> <span>({{ .Count }})</span></li>
+  {{ end }}
+      </ul>
+  </div>
+</div>
+{{end}}

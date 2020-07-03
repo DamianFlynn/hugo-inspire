@@ -1,0 +1,20 @@
+<!-- post-author--> 
+<div class="widget-wrap fl-wrap">
+  <h4 class="widget-title"><span>Contact</span> Author</h4>
+  <div class="widget-container fl-wrap">
+    {{partial "social-links" . }}
+      <div class="about-widget fl-wrap">
+          <img src="{{ (.Params.authorAvatar | default .Site.Author.avatar) | absURL}}" alt="">
+          <h5><a href="#">{{.Params.author | default .Site.Author.name}}</a></h5>
+          <div class="clearfix"></div>
+          <p>{{.Params.authorDescription | default .Site.Author.description}}</p>
+          <div class="about-widget-social fl-wrap">
+              <span>Find on : </span>
+              <ul >
+
+              </ul>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- post-author end--> 

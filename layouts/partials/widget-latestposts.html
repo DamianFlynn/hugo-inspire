@@ -1,0 +1,22 @@
+<div class="widget-wrap fl-wrap">
+  <h4 class="widget-title"><span>Latest</span> Posts</h4>
+  <div class="widget-container fl-wrap">
+      <div class="widget-posts fl-wrap">
+          <ul>
+            {{ range first 4 site.RegularPages.ByLastmod.Reverse }}
+              <li class="clearfix">
+                    {{if .Params.image}}
+                    <a href="{{ .Permalink }}"  class="widget-posts-img"><img src="{{.Params.image | absURL}}" class="respimg" alt=""></a>
+                    {{else}}
+                    <a href="{{ .Permalink }}"  class="widget-posts-img"><img src="{{$.Site.BaseURL}}/images/default/{{ index (seq 7 | shuffle) 0 }}.jpg" class="respimg" alt=""></a>  
+                    {{end}}
+                  <div class="widget-posts-descr">
+                      <a href="{{ .Permalink }}" title="">{{ .Name }}</a>
+                      <span class="widget-posts-date"> {{dateFormat "Mon Jan 2, 2006" .Date}} </span> 
+                  </div>
+              </li>
+              {{end}}
+          </ul>
+      </div>
+  </div>
+</div>
