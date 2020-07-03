@@ -41,8 +41,18 @@
           </div><!-- .entry-meta -->
         </header><!-- .entry-header -->
         <div class="entry-content">
-          {{ .Description | markdownify }}
+          {{ if .Description }}
+          <h5>
+            <a href="{{ .Permalink }}">
+              {{ with .Description }}{{ . | markdownify }}
+              {{ else }}{{ partial "summary_minus_toc.html" . | safeHTML }}{{ end }}
+            </a>
+          </h5>
+          {{end}}
+          <p>{{ .Summary  }}</p>
+          {{ if .Truncated }}
           <p class="read-more"><a href="{{ .Permalink }}" class="more-link" title="read more">read more</a></p>
+          {{end}}
         </div><!-- .entry-content -->
         <footer class="entry-footer">
           <div class="tag-links">
