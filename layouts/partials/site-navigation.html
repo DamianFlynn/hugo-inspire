@@ -29,7 +29,7 @@
             {{ with .Site.Taxonomies }}
               {{ range $key,$val := . }}
               <li>
-              {{ with $.Site.GetPage "taxonomyTerm" $key }}
+              {{ with $.Site.GetPage "taxonomy" $key }}
               <a href="{{ .Permalink }}"><span>{{ .Type  | safeHTML }}</span></a>
               {{ end }}
               </li>

@@ -24,7 +24,7 @@
   <link rel="preconnect" href="//github.com" crossorigin>
   
   <!-- Page Title -->
-  <title>{{ if (eq .Kind "home") }}{{ .Site.Title }}{{ else if (eq .Kind "taxonomy") }}{{ printf "%s ‘%s’ ❚ %s" (.Data.Singular | title) .Data.Term .Site.Title }}{{ else }}{{ printf "%s ❚ %s" .Title .Site.Title }}{{ end }}</title>
+  <title>{{ if (eq .Kind "home") }}{{ .Site.Title }}{{ else if (eq .Kind "term") }}{{ printf "%s ‘%s’ ❚ %s" (.Data.Singular | title) .Data.Term .Site.Title }}{{ else }}{{ printf "%s ❚ %s" .Title .Site.Title }}{{ end }}</title>
   <link rel="shortcut icon" href="{{ "/images/icons/favicon.ico" | absURL}}" />
   <link rel="apple-touch-icon" sizes="57x57" href="/images/icons/apple-icon-57x57.png">
   <link rel="apple-touch-icon" sizes="60x60" href="/images/icons/apple-icon-60x60.png">
