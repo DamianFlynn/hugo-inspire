@@ -1,7 +1,7 @@
 {{ $permalink_pretty := .Permalink | replaceRE "\\.html$" "/" }} <!-- Always have a trailing slash, even with uglyURLs enabled. -->
 {{- with $.Params.images -}}
-    <meta name="twitter:card" content="summary_large_image"/>
-    <!-- As per https://developer.twitter.com/en/docs/tweets/optimize-with-cards/overview/summary-card-with-large-image,
+  <meta name="twitter:card" content="summary_large_image"/>
+  <!-- As per https://developer.twitter.com/en/docs/tweets/optimize-with-cards/overview/summary-card-with-large-image,
          the required card property is "twitter:image", not "twitter:image:src". -->
     {{- $image := (index . 0) -}}
     {{ if (findRE "^/" $image) }} <!-- If image link has a leading slash -->
@@ -33,6 +33,7 @@
         {{- end -}}
     {{- end -}}
 {{- end }}
+<meta name="twitter:url" content="{{.Permalink | absURL}}" />
 <meta name="twitter:title" content="{{ .Title }}"/>
 <meta name="twitter:description" content="{{ with .Description }}{{ . | markdownify | plainify }}{{ else }}{{ if .IsPage }}{{ partial "summary_minus_toc.html" . | markdownify | plainify }}{{ else }}{{ with .Site.Params.description }}{{ . | markdownify | plainify }}{{ end }}{{ end }}{{ end -}}"/>
 {{ with .Site.Social.twitter -}}

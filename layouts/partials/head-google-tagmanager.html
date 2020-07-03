@@ -1,0 +1,16 @@
+{{ "<!-- Google Tag Manager -->" | safeHTML }}
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ .Site.Params.GoogleTagManager.containerId }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push({
+    page:'{{ .Page.Title }}',
+    category:'{{ .Page.Params.categories }}',
+    });}
+  gtag('js', new Date());
+
+  gtag('config', '{{ .Site.Params.GoogleTagManager.containerId }}');
+</script>
+{{ "<!-- End Google Tag Manager -->" | safeHTML }}
+
+

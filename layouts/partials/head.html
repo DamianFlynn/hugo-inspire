@@ -1,0 +1,101 @@
+{{ "<!-- partial/head.html -->" | safeHTML }}
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  
+  <!-- Enable Google Tag Manager -->
+  {{- if .Site.Params.GoogleTagManager.containerId -}}{{- partial "head-google-tagmanager.html" (dict "Site" .Site "Page" $.Page) -}}{{- end -}}
+  
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  <meta name="referrer" content="no-referrer">
+  
+  <!-- Preconnect -->
+  <link rel="preconnect" href="//www.googletagmanager.com" crossorigin>
+  <link rel="preconnect" href="//linkedin.com" crossorigin>
+  <link rel="preconnect" href="//www.gravatar.com" crossorigin>
+  <link rel="preconnect" href="//kit.fontawesome.com" crossorigin>
+  <link rel="preconnect" href="//cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="//www.facebook.com" crossorigin>
+  <link rel="preconnect" href="//twitter.com" crossorigin>
+  <link rel="preconnect" href="//github.com" crossorigin>
+  
+  <!-- Page Title -->
+  <title>{{ if (eq .Kind "home") }}{{ .Site.Title }}{{ else if (eq .Kind "taxonomy") }}{{ printf "%s ‘%s’ ❚ %s" (.Data.Singular | title) .Data.Term .Site.Title }}{{ else }}{{ printf "%s ❚ %s" .Title .Site.Title }}{{ end }}</title>
+  <link rel="shortcut icon" href="{{ "/images/icons/favicon.ico" | absURL}}" />
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/icons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/icons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/icons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/icons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/icons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/icons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/icons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/icons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/icons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="36x36"  href="/images/icons/android-icon-36x36.png">
+  <link rel="icon" type="image/png" sizes="48x48"  href="/images/icons/android-icon-48x48.png">
+  <link rel="icon" type="image/png" sizes="72x72"  href="/images/icons/android-icon-72x72.png">
+  <link rel="icon" type="image/png" sizes="96x96"  href="/images/icons/android-icon-96x96.png">
+  <link rel="icon" type="image/png" sizes="144x144"  href="/images/icons/android-icon-144x144.png">
+  <link rel="icon" type="image/png" sizes="196x196"  href="/images/icons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/images/icons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/images/icons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icons/favicon-16x16.png">
+  <link rel="manifest" href="/images/icons/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/images/icons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="canonical" href="{{ .Permalink }}" />
+  {{if .IsHome -}}
+  <meta name="description" content="{{ substr .Site.Params.description 0 160 }}" />
+  {{- else if .IsPage -}}
+  <meta name="description" content="{{ .Params.metadescription | default (substr .Summary 0 160) }}" />
+  {{- else if .IsNode -}}
+  <meta name="description" content='Read my posts about "{{ .Title }}". {{ .Site.Params.description }}' />
+  {{- else -}}
+  <meta name="description" content="{{ .Params.metadescription | default .Site.Params.description }}" />
+  {{- end -}}
+  <meta name="keywords" content="vcard, governance, automation, code, devops, cloud, resume, azure, portfolio" />
+  <meta name="author" content="damianflynn.com" />
+
+  <!-- Page Level Control of Robots -->
+  {{- with .Params.robotsdisallow }}
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="googlebot" content="noindex, nofollow,snippet, noarchive">
+  {{- else -}}
+  <meta name="robots" content="index, follow, archive">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  {{- end -}}
+  
+  <!-- Opengraph and Twitter -->
+  {{ partial "head-opengraph.html" . }}
+  {{ partial "head-twittercard.html" . }}
+  {{ partial "head-pageschema.html" . }}
+  {{ partial "head-indiweb.html" . }}
+
+  <!-- Site Verification -->
+  {{ with .Site.Params.googleSiteVerification }}<meta name="google-site-verification" content="{{ . }}" />{{ end }}
+  {{ with .Site.Params.yandexSiteVerification }}<meta name="yandex-verification" content="{{ . }}" />{{ end }}
+  {{ hugo.Generator }}
+  
+  <!-- Custom CSS -->
+  <link type="text/css" rel="stylesheet" href="{{ "/css/inspire.css" | absURL}}" />
+
+  {{- if (findRE "<code|<pre" .Content 1) -}}    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet">{{- end  -}}
+  <link rel='stylesheet' id='fonts-css'  href='//fonts.googleapis.com/css?family=Montserrat%3A400%2C500%2C600%2C700%2C800%2C900%7CPoppins%3A400%2C500%2C600%2C700%2C800%2C900%7CTitillium+Web%3A400%2C600%2C700&#038;subset=cyrillic%2Ccyrillic-ext%2Cdevanagari%2Clatin-ext%2Cvietnamese&#038;ver=1.0.0' type='text/css' media='all' />
+
+  {{ range .Site.Params.custom_css }}
+  <link rel="stylesheet" type="text/css" href="{{ . | relURL }}">
+  {{ end }}
+  
+  <!-- RSS Links -->
+  <link href="{{ "index.xml" | absURL}}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
+  
+  <!-- Java Scripts-->
+  {{ block "head" . }}{{ end }}
+</head>
