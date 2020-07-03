@@ -1,72 +1,102 @@
-{{ define "main" }}             <!-- List of all posts -->
+{{ define "main" }}
+<!-- List of all posts -->
 
-{{ if (eq .Kind "section") }}                          <!-- Section -->
-    {{ $title := .Title }}
-    {{ $section := .Section }}
-    {{ with .File }}
-        {{ if (eq .Path "") }} <!-- Regular section -->
-            <h1>Posts in ‘{{ .Dir | default $section }}’</h1>
-        {{ else }}                  <!-- Branch bundle based section -->
-            <h1>{{ $title }}</h1>
-            <h2>Posts in ‘{{ .Dir | default $section }}’</h2>
-        {{ end }}
-    {{ end }}
+{{ if (eq .Kind "section") }}
+<!-- Section -->
+{{ $title := .Title }}
+{{ $section := .Section }}
+{{ with .File }}
+{{ if (eq .Path "") }}
+<!-- Regular section -->
+<h1>Posts in ‘{{ .Dir | default $section }}’</h1>
+{{ else }}
+<!-- Branch bundle based section -->
+<h1>{{ $title }}</h1>
+<h2>Posts in ‘{{ .Dir | default $section }}’</h2>
+{{ end }}
+{{ end }}
 {{ else if (eq .Kind "taxonomy") }}
-    <!-- If the page is /tags/foo/, .Data.Singular = "tag", .Data.Term = "foo" -->
-    <h1>Posts with the {{ .Data.Singular }} ‘{{ .Data.Term }}’</h1>
+<!-- If the page is /tags/foo/, .Data.Singular = "tag", .Data.Term = "foo" -->
+<h1>Posts with the {{ .Data.Singular }} ‘{{ .Data.Term }}’</h1>
 {{ end }}
 
-<section>
-    <ul class="post-list">
-        {{ range .RegularPages }}
-            {{ .Render "li" }}
-        {{ end }}
-    </ul>
-</section>
+<div class="site-content">
+  <div class="inner">
+    <main class="site-main">
+      {{ range .RegularPages }}
+      <article class="post">
+        <header class="entry-header">
+          <div class="entry-header-wrap">
+            <a href="{{ .Permalink }}" class="post-thumbnail">
+              <img src="{{ .Params.image | absURL}}" alt="">
+            </a>
+            <h2 class="entry-title"><a href='{{ .Permalink }}' rel="bookmark" title="Permanent Link to {{ .Permalink }}"> {{ .Title }}</a></h2>
+          </div><!-- .entry-header-wrap -->
+          <div class="entry-meta">
+            <span class="post-author">Damian</span> / <time class="published" datetime="{{ .Date.Format "2 January 2006" | safeHTML }}">{{ .Date.Format "2 January 2006" | safeHTML }}</time>
+          </div><!-- .entry-meta -->
+        </header><!-- .entry-header -->
+        <div class="entry-content">
+          {{ .Description | markdownify }}
+          <p class="read-more"><a href="{{ .Permalink }}" class="more-link" title="read more">read more</a></p>
+        </div><!-- .entry-content -->
+        <footer class="entry-footer">
+          <div class="tag-links">
+            <span>Tags :{{ range $index, $tag := .Params.tags }}<a href="{{$.Site.BaseURL}}/tags/{{ $tag | urlize }}/" title="Pages tagged {{ $tag }}" rel="tag">{{$tag}}</a>{{end}}</span>
+            <span>Category :{{ range $index, $tag := .Params.categories }}<a
+              href="{{$.Site.BaseURL}}/categories/{{ $tag | urlize }}/" title="Pages category {{ $tag }}" rel="tag">{{$tag}}</a> {{end}}</span>
+          </div>        
+      </footer><!-- .entry-footer -->
 
+      </article><!-- .post -->
+      {{ end }}
+    </main><!-- .site-main -->
+
+  </div><!-- .inner -->
+</div><!-- .site-content -->
 {{ with .Content }}
-    <h3>Content</h3>
-    {{ . }}
+<h3>Content</h3>
+{{ . }}
 {{ end }}
 
 {{ with .Resources }}
-    <hr>
-    <h3 id="resources">Resources</h3>
-    <ul>
-	{{ range . }}
-	    {{ if .RelPermalink }}
-	        <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
-	    {{ else }}
-	        <li>{{ .ResourceType | title }} (no link, only embedded in page)</li>
-	    {{ end }}
-	{{ end }}
-    </ul>
+<hr>
+<h3 id="resources">Resources</h3>
+<ul>
+  {{ range . }}
+  {{ if .RelPermalink }}
+  <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+  {{ else }}
+  <li>{{ .ResourceType | title }} (no link, only embedded in page)</li>
+  {{ end }}
+  {{ end }}
+</ul>
 {{ end }}
 
 {{ if (not ($.Param "disable_debug")) }}
-    <hr>
-    <a id="debug"></a>
-    <h3 id="page-debug">Page (Debug)</h3>
-    {{ partial "debugprint.html" . }}
-    {{ with .Params }}
-        <h3 id="page-params-debug">Page Params (Debug)</h3>
-        {{ partial "debugprint.html" . }}
-    {{ end }}
-    {{ with .Resources }}
-        <h3 id="resource-debug">Resources (Debug)</h3>
-        {{ partial "debugprint.html" . }}
-    {{ end }}
-    <h3 id="file-debug">File Object (Debug)</h3>
-    {{ with .File }}
-        {{ if (ne .Path "") }}
-            {{ partial "debugprint.html" . }}
-        {{ else }}
-            <!-- For pages that don't have an associated content file name,
+<hr>
+<a id="debug"></a>
+<h3 id="page-debug">Page (Debug)</h3>
+{{ partial "debugprint.html" . }}
+{{ with .Params }}
+<h3 id="page-params-debug">Page Params (Debug)</h3>
+{{ partial "debugprint.html" . }}
+{{ end }}
+{{ with .Resources }}
+<h3 id="resource-debug">Resources (Debug)</h3>
+{{ partial "debugprint.html" . }}
+{{ end }}
+<h3 id="file-debug">File Object (Debug)</h3>
+{{ with .File }}
+{{ if (ne .Path "") }}
+{{ partial "debugprint.html" . }}
+{{ else }}
+<!-- For pages that don't have an associated content file name,
                  they only have the .File.UniqueID.
             -->
-            {{ partial "debugprint.html" (dict "UniqueID" .UniqueID "Path" .Path) }}
-        {{ end }}
-    {{ end }}
+{{ partial "debugprint.html" (dict "UniqueID" .UniqueID "Path" .Path) }}
+{{ end }}
+{{ end }}
 {{ end }}
 
 {{ end }}
