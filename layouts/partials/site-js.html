@@ -1,0 +1,8 @@
+<!--=============== scripts  ===============-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script type="text/javascript" src="/js/plugins.js"></script>
+<script type="text/javascript" src="/js/custom.js"></script>
+
+{{ if (findRE "<pre" .Content 1) }}<script type="text/javascript" src="/js/copy-code-button.js" | absURL></script>{{ end }}
+
+{{ if .Site.Params.cookieConsentBanner.enable }}{{ partial "cookie-consent" .Site.Params.cookieConsentBanner }}{{ end }}

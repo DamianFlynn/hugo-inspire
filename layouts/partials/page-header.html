@@ -1,0 +1,26 @@
+<header class="site-header">
+  <div class="inner">
+    <h1 class="site-title"><a class="logo-text" href="/">{{.Site.Title}}</a></h1>
+    <p class="site-description">{{.Site.Params.description}}
+      <br>
+      {{ printf `<span style="font-variant: small-caps;">.Kind</span> (<strong>%s</strong>):` .Kind | safeHTML }}
+      {{ printf `<span style="font-variant: small-caps;">.Type</span> (<strong>%s</strong>) /` .Type | safeHTML }}
+      {{ printf `<span style="font-variant: small-caps;">.Layout</span> (<strong>%s</strong>)` .Layout | safeHTML }}
+      {{ $bundle_type := "n/a" }}
+      {{ with .File }}
+      {{ if (eq .Path "") }}
+      {{ $bundle_type = `n/a (regular "list" page)` }}
+      {{ else }}
+      {{ if (eq .BaseFileName "_index") }}
+      {{ $bundle_type = "branch" }}
+      {{ else if (eq .BaseFileName "index") }}
+      {{ $bundle_type = "leaf" }}
+      {{ else }}
+      {{ $bundle_type = "n/a (regular page)" }}
+      {{ end }}
+      {{ end }}
+      {{ end }}
+      {{ printf `<span style="font-variant: small-caps;">Bundle</span>: <strong>%s</strong>` $bundle_type | safeHTML }}
+    </p>
+  </div><!-- .inner -->
+</header>

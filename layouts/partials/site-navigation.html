@@ -1,0 +1,45 @@
+<nav id="top" class="site-navigation">
+  <div class="inner">
+      <button id="menu-toggle" aria-expanded="false">Menu</button>
+      <div class="nav-menu">
+          <ul class="menu">
+            {{ $currentPage := . }}
+            {{ range .Site.Menus.main.ByWeight }}
+            {{ if .HasChildren }}
+            <li class="{{ if $currentPage.HasMenuCurrent "main" . }}act-link{{ end }}">
+              <a href="#"><span>{{ .Name }}</span></a>
+              <!--level 2 -->
+              <ul class="sub-menu">
+                <!--level 2 -->
+                {{ range .Children }}
+                <li class="{{ if $currentPage.IsMenuCurrent "main" . }}act-link{{ end }}">
+                  <a href="{{ .URL }}">{{ .Name }}</a>
+                </li>
+                {{ end }}
+              </ul>
+              <!--level 2 end -->
+            </li>
+            {{ else }}
+            <li>
+              <a href="{{ .URL }}"><span>{{ .Name }}</span></a>
+            </li>
+            {{ end }}
+            {{ end }}
+    
+            {{ with .Site.Taxonomies }}
+              {{ range $key,$val := . }}
+              <li>
+              {{ with $.Site.GetPage "taxonomyTerm" $key }}
+              <a href="{{ .Permalink }}"><span>{{ .Type  | safeHTML }}</span></a>
+              {{ end }}
+              </li>
+              {{ end }}
+              {{ with $.Site.GetPage "page" "search" }}
+              <a href="{{ .Permalink }}"><span>{{ (.Title | lower) | safeHTML }}</span></a>
+              {{ end }}            
+            {{ end }}
+          </ul>        
+      </div><!-- .nav-menu -->
+      <a class="subscribe-button fa-feed square fill-horizontal" href="/feed.xml"><span class="screen-reader-text">Subscribe</span></a>
+  </div><!-- .inner -->
+</nav><!-- .site-navigation -->
