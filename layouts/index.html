@@ -23,15 +23,50 @@
      sorted by last modified date, most recent first -->
 {{ $paginator := .Paginate (site.RegularPages.ByLastmod.Reverse) 10 }}
 
-<div class="posts">
-    <!-- http://justindunham.net/blog-bells-and-whistles-in-hugo/ -->
-    {{ range $paginator.Pages }}
-        {{ .Render "summary"}}
-    {{ end }}
-</div>
+<div class="site-content">
+    <div class="inner">
+      <main class="site-main">
+      {{ range $paginator.Pages }}
+        <!-- Article Start -->
+        <article class="post">
+          <header class="entry-header">
+            <div class="entry-header-wrap">
+              <a href="{{ .Permalink }}" class="post-thumbnail">
+                <img src="{{ .Params.image | absURL}}" alt="">
+              </a>
+              <h2 class="entry-title"><a href='{{ .Permalink }}' rel="bookmark" title="Permanent Link to {{ .Permalink }}"> {{ .Title }}</a></h2>
+            </div><!-- .entry-header-wrap -->
+            <div class="entry-meta">
+              <span class="post-author">Damian</span> / <time class="published" datetime="{{ .Date.Format "2 January 2006" | safeHTML }}">{{ .Date.Format "2 January 2006" | safeHTML }}</time>
+            </div><!-- .entry-meta -->
+          </header><!-- .entry-header -->
+          <div class="entry-content">
+            {{ if .Description }}
+            <h5>
+              <a href="{{ .Permalink }}">
+                {{ with .Description }}{{ . | markdownify }}
+                {{ else }}{{ partial "summary_minus_toc.html" . | safeHTML }}{{ end }}
+              </a>
+            </h5>
+            {{end}}
+            <p>{{ .Summary  }}</p>
+            {{ if .Truncated }}
+            <p class="read-more"><a href="{{ .Permalink }}" class="more-link" title="read more">read more</a></p>
+            {{end}}
+          </div><!-- .entry-content -->
+          <footer class="entry-footer">
+            <div class="tag-links">
+              <span>Tags :{{ range $index, $tag := .Params.tags }}<a href="{{$.Site.BaseURL}}/tags/{{ $tag | urlize }}/" title="Pages tagged {{ $tag }}" rel="tag">{{$tag}}</a>{{end}}</span>
+              <span>Category :{{ range $index, $tag := .Params.categories }}<a
+                href="{{$.Site.BaseURL}}/categories/{{ $tag | urlize }}/" title="Pages category {{ $tag }}" rel="tag">{{$tag}}</a> {{end}}</span>
+            </div>        
+          </footer><!-- .entry-footer -->
+        </article><!-- .post -->
+        {{ end }}
 
-<p>
-    <div class="pagination">
+      <!-- Article End -->
+      <!-- Page Navigator Start -->
+      <nav class="pagination">
         <!-- https://discourse.gohugo.io/t/solved-big-pagination-need-add/6576/8?u=kaushalmodi -->
         <!--
              Pagination for different values of paginateWindow.
@@ -91,8 +126,12 @@
             <a href="{{ .Paginator.Next.URL }}">Older</a>
         {{ end }}
         ]
-    </div>
-</p>
+    </nav><!-- Page Navigator End -->
+</main><!-- .site-main -->
+{{ partial "page-sidebar" . }}
+</div><!-- .inner -->
+</div><!-- .site-content -->
+<!-- End Of Page Main Payload-->
 
 {{ if (not ($.Param "disable_debug")) }}
     {{ if (eq 1 $paginator.PageNumber) }}
