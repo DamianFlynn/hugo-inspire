@@ -21,8 +21,8 @@
 
 <!-- Have the paginator list all the regular pages in the site,
      sorted by last modified date, most recent first -->
-{{ $paginator := .Paginate (site.RegularPages.ByLastmod.Reverse) 10 }}
 
+{{ $paginator := .Paginate site.RegularPages.ByLastmod }}
 <div class="site-content">
     <div class="inner">
       <main class="site-main">
@@ -64,7 +64,7 @@
         </article><!-- .post -->
         {{ end }}
 
-      <!-- Article End -->
+
       <!-- Page Navigator Start -->
       {{ $window := .Site.Params.paginateWindow | default 1 }}
       {{ if gt $paginator.TotalPages 1 }}
@@ -105,27 +105,22 @@
         {{ end }}
 
         <!-- https://gohugo.io/templates/pagination/#build-the-navigation -->
+        {{if .Paginator.HasPrev }}
+          <a href="{{ .Paginator.Prev.URL }}" class="newer-posts fa-chevron-left square fill-horizontal"><span class="screen-reader-text">Newer Posts</span></a>
+        {{ end }}
         {{ range $paginator.Pagers }}
+        <span class="page-number">
           {{ $curr_page := .PageNumber }}
           {{ if (in $page_num_list $curr_page) }}
-            <a href="{{ .URL }}">
-            {{- if eq . $paginator -}}<b>{{- end -}}
-            {{ .PageNumber }}
-            {{- if eq . $paginator -}}</b>{{- end -}}
-            </a>
+          {{- if eq . $paginator -}}<b> {{ .PageNumber }} </b>{{else}}<a href="{{ .URL }}">{{ .PageNumber }}</a>{{- end -}}
           {{ else if in (slice 2 (sub $total 1)) $curr_page }}
-            <a name="">&hellip;</a>
+          <a name="">&hellip;</a>
           {{ end }}
+        </span>
         {{ end }}
-      
-        [
-        {{ if .Paginator.HasPrev }}
-          <a href="{{ .Paginator.Prev.URL }}">Newer</a>
-        {{ end }}
-        {{ if .Paginator.HasNext }}
-          <a href="{{ .Paginator.Next.URL }}">Older</a>
-        {{ end }}
-        ]
+        {{if .Paginator.HasNext }}
+        <a href="{{ .Paginator.Next.URL }}" class="older-posts fa-chevron-right square fill-horizontal"><span class="screen-reader-text">Older Posts</span></a>
+        {{end}}
       </nav><!-- Page Navigator End -->
       {{ end }}
 
